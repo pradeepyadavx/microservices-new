@@ -1,9 +1,12 @@
 package com.pradeep.inventoryservice.controller;
 
+import com.pradeep.inventoryservice.dto.InventoryResponse;
 import com.pradeep.inventoryservice.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -12,9 +15,10 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    @GetMapping("/{sku-id}")
+    // example host /api/inventory? skuId=1,skuId=2
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public boolean isInStock(@PathVariable("sku-id") String skuId){
+    public List<InventoryResponse> isInStock(@RequestParam List<String> skuId){
         return inventoryService.isInStock(skuId);
     }
 }
