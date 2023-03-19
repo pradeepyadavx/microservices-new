@@ -22,7 +22,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final WebClient webClient;
+    private final WebClient.Builder webBuilder;
 
     public void placeOrder(OrderRequest orderRequest){
         Order order = new Order();
@@ -43,8 +43,18 @@ public class OrderService {
 
         // need to check if order is in stock using inventory call
 
-        InventoryResponse[] inventoryResponseArray = webClient.get()
-                .uri("http://localhost:9092/api/inventory",
+        /* url if we call direct*/
+       // String url="http://localhost:9092/api/inventory";
+
+        /* url if we use  discovery server  direct
+        * need to use laod balancer if have multiple instances
+        * */
+        String url="http://inventory-service/api/inventory";
+
+
+
+        InventoryResponse[] inventoryResponseArray = webBuilder.build().get()
+                .uri(url,
                         uriBuilder -> uriBuilder.queryParam("skuId", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
