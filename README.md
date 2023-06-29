@@ -11,3 +11,21 @@ http://localhost:8080/eureka/web
 
 api gateway is conf at 8080
 
+
+
+
+api gateway is secured by oauth2 using keycloak
+refer video 5
+
+steps to run keycloak
+
+docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:18.0.0 start-dev
+
+make new  realm ->  spring-boot-microservices-realm
+make client -> spring-cloud-client
+choose access type-> confidential
+disable -> Standard web flow and Direct access grant enabled
+credentials -> get from client
+
+
+
