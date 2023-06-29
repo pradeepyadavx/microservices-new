@@ -21,6 +21,9 @@ steps to run keycloak
 
 docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:18.0.0 start-dev
 
+either import  realm-export.json 
+or follow below steps
+
 make new  realm ->  spring-boot-microservices-realm
 make client -> spring-cloud-client
 choose access type-> confidential
