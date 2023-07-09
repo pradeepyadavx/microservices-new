@@ -31,5 +31,8 @@ disable -> Standard web flow and Direct access grant enabled
 enable -> Service Accounts Enabled 
 credentials -> get from client
 
+## Run Zipkin
+docker run -d -p 9411:9411 openzipkin/zipkin
+
 
 
