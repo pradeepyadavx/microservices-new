@@ -28,6 +28,7 @@ make new  realm ->  spring-boot-microservices-realm
 make client -> spring-cloud-client
 choose access type-> confidential
 disable -> Standard web flow and Direct access grant enabled
+enable -> Service Accounts Enabled 
 credentials -> get from client
 
 
