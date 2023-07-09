@@ -3,6 +3,7 @@ package com.pradeep.orderservice.service;
 import com.pradeep.orderservice.dto.InventoryResponse;
 import com.pradeep.orderservice.dto.OrderLineItemDto;
 import com.pradeep.orderservice.dto.OrderRequest;
+import com.pradeep.orderservice.event.OrderPlacedEvent;
 import com.pradeep.orderservice.model.Order;
 import com.pradeep.orderservice.model.OrderLineItems;
 import com.pradeep.orderservice.repository.OrderRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -30,6 +32,9 @@ public class OrderService {
 
     // for custom traceid in sleuth zpikin
     private final Tracer tracer;
+
+    // for kafka
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest){
         Order order = new Order();
@@ -75,6 +80,7 @@ public class OrderService {
 
             if(allProductsInStock){
                 orderRepository.save(order);
+                kafkaTemplate.send("notificationTopic",new OrderPlacedEvent(order.getOrderNumber()));
                 return "order placed successfully";
             }else {
                 throw new IllegalArgumentException("Product is not in stock ,please try again later");
